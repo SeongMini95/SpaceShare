@@ -17,3 +17,5 @@ out/
 **/src/main/generated/
 
 application-*.yml
+
+ss-core/src/*/resources/*.yml
