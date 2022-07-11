@@ -46,3 +46,9 @@ subprojects {
         useJUnitPlatform()
     }
 }
+
+project(":ss-user-api") {
+    dependencies {
+        implementation project(":ss-core")
+    }
+}
