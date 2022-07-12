@@ -42,7 +42,19 @@ subprojects {
         }
     }
 
-    test {
+    tasks.named('test') {
         useJUnitPlatform()
+    }
+}
+
+project(":ss-user-api") {
+    dependencies {
+        implementation project(":ss-core")
+    }
+}
+
+project(":ss-host-api") {
+    dependencies {
+        implementation project(":ss-core")
     }
 }
