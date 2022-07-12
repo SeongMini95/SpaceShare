@@ -11,8 +11,10 @@ const LoginRedirect = () => {
 
   useEffect(() => {
     const token = searchParams.get('token');
-    const certify_key = searchParams.get('code');
-    let redirect_uri = searchParams.get('redirect_uri');
+    const certifyKey = searchParams.get('code');
+    const redirectUri = searchParams.get('redirect_uri');
+
+    let returnUri = redirectUri;
 
     try {
       if (token) {
@@ -24,26 +26,21 @@ const LoginRedirect = () => {
           profile: claims.profile,
         }));
       } else {
-        if (certify_key) {
-          redirect_uri = '/member/afterSignUp';
+        if (certifyKey) {
+          returnUri = '/member/afterSignUp';
         }
       }
     } catch (e) {
       console.error('token not valid');
     }
 
-    navigate(redirect_uri, certify_key ? {
+    navigate(returnUri, certifyKey ? {
       state: {
-        certify_key: certify_key,
-        redirect_uri: redirect_uri
+        certifyKey: certifyKey,
+        redirectUri: redirectUri
       }
-    } : null);
+    } : {});
   }, []);
-
-  return (
-    <>
-    </>
-  );
 };
 
 export default LoginRedirect;
