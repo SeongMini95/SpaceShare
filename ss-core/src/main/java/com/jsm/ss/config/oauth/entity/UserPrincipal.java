@@ -18,12 +18,16 @@ import java.util.Map;
 public class UserPrincipal implements OAuth2User {
 
     private Long id;
+    private String nickname;
+    private String profile;
     private Collection<GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
     @Builder
-    public UserPrincipal(Long id, Collection<GrantedAuthority> authorities, Map<String, Object> attributes) {
+    public UserPrincipal(Long id, String nickname, String profile, Collection<GrantedAuthority> authorities, Map<String, Object> attributes) {
         this.id = id;
+        this.nickname = nickname;
+        this.profile = profile;
         this.authorities = authorities;
         this.attributes = attributes;
     }
@@ -46,6 +50,8 @@ public class UserPrincipal implements OAuth2User {
     public static UserPrincipal create(Member member, Map<String, Object> attributes) {
         return UserPrincipal.builder()
                 .id(member.getId())
+                .nickname(member.getNickname())
+                .profile(member.getProfile())
                 .authorities(Collections.singleton(new SimpleGrantedAuthority(member.getRole().getRole())))
                 .attributes(attributes)
                 .build();
