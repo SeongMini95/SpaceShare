@@ -55,4 +55,8 @@ public class MemberCertify extends BaseTimeEntity {
         this.isUse = false;
         this.expireTime = LocalDateTime.now().plusMinutes(minutes);
     }
+
+    public void use() {
+        this.isUse = true;
+    }
 }

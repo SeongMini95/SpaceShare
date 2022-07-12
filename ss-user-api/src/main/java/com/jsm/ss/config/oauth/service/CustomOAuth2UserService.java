@@ -44,7 +44,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                         .build());
 
         if (savedMember.getId() != null) {
-            savedMember.updateEmailAfterLogin(userInfo.getEmail());
+            savedMember.updateEmail(userInfo.getEmail());
         } else {
             savedMember = memberRepository.save(savedMember);
 
