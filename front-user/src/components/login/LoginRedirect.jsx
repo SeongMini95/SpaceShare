@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { login } from "../../redux/reducer/memberSlice";
 import jwtDecode from "jwt-decode";
+import { DEFAULT_PROFILE_URI } from "../../globalVar";
 
 const LoginRedirect = () => {
   const [searchParams] = useSearchParams();
@@ -23,7 +24,7 @@ const LoginRedirect = () => {
         dispatch(login({
           token: token,
           nickname: claims.nickname,
-          profile: claims.profile,
+          profile: claims.profile ? claims.profile : DEFAULT_PROFILE_URI,
         }));
       } else {
         if (certifyKey) {
