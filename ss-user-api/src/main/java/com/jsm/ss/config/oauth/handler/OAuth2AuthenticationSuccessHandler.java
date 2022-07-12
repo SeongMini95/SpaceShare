@@ -6,6 +6,7 @@ import com.jsm.ss.config.oauth.token.AuthToken;
 import com.jsm.ss.config.oauth.token.AuthTokenProvider;
 import com.jsm.ss.domain.member.Member;
 import com.jsm.ss.domain.member.repository.MemberRepository;
+import com.jsm.ss.domain.membercertify.MemberCertify;
 import com.jsm.ss.domain.membercertify.enums.CertifyCode;
 import com.jsm.ss.domain.membercertify.repository.MemberCertifyRepository;
 import com.jsm.ss.domain.memberrefreshtoken.MemberRefreshToken;
@@ -92,15 +93,15 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             member = memberRepository.findById(user.getId()).orElseThrow();
         }
         String nickname = member.getNickname();
-        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(host + redirectUri);
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder
+                .fromUriString(host + redirectUri)
+                .queryParam("redirect_uri", targetUri);
 
         if (nickname == null || nickname.isBlank()) {
-            String certifyKey = memberCertifyRepository.findCertifyKeyByMemberIdAndCertifyCode(member.getId(), CertifyCode.SET_ADD_INFO);
+            String certifyKey = memberCertifyRepository.save(new MemberCertify(member, CertifyCode.SET_ADD_INFO, 30L)).getCertifyKey();
             uriComponentsBuilder.queryParam("code", certifyKey);
         } else {
-            uriComponentsBuilder
-                    .queryParam("token", accessToken.getToken())
-                    .queryParam("redirect_uri", targetUri);
+            uriComponentsBuilder.queryParam("token", accessToken.getToken());
         }
 
         return uriComponentsBuilder.build().toUriString();

@@ -7,8 +7,6 @@ import com.jsm.ss.domain.member.Member;
 import com.jsm.ss.domain.member.enums.Role;
 import com.jsm.ss.domain.member.enums.SiteDiv;
 import com.jsm.ss.domain.member.repository.MemberRepository;
-import com.jsm.ss.domain.membercertify.MemberCertify;
-import com.jsm.ss.domain.membercertify.enums.CertifyCode;
 import com.jsm.ss.domain.membercertify.repository.MemberCertifyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -47,8 +45,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             savedMember.updateEmail(userInfo.getEmail());
         } else {
             savedMember = memberRepository.save(savedMember);
-
-            memberCertifyRepository.save(new MemberCertify(savedMember, CertifyCode.SET_ADD_INFO, 0L));
         }
 
         return UserPrincipal.create(savedMember, user.getAttributes());
