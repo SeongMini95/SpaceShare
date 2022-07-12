@@ -44,6 +44,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     @Value("${jwt.refreshTokenExpiry}")
     private long refreshTokenExpiry;
 
+    @Value("${jwt.host}")
+    private String host;
+
     @Value("${jwt.redirectUri}")
     private String redirectUri;
 
@@ -84,7 +87,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
         CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
 
-        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(redirectUri);
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(host + redirectUri);
         Member member = memberRepository.findById(user.getId()).orElseThrow();
         String nickname = member.getNickname();
 

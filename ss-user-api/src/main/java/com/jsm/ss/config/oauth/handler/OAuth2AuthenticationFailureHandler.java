@@ -18,12 +18,15 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
 
     private final HttpCookieOAuth2AuthorizationRequestRepository oAuth2AuthorizationRequestRepository;
 
+    @Value("${jwt.host}")
+    private String host;
+
     @Value("${jwt.loginUri}")
     private String loginUri;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         oAuth2AuthorizationRequestRepository.removeAuthorizationRequestCookies(request, response);
-        getRedirectStrategy().sendRedirect(request, response, loginUri);
+        getRedirectStrategy().sendRedirect(request, response, host + loginUri);
     }
 }
