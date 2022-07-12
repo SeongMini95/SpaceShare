@@ -71,11 +71,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         AuthToken accessToken = tokenProvider.createAuthToken(user.getId(), user.getNickname(), user.getProfile(), new Date(now + expiry));
         AuthToken refreshToken = tokenProvider.createAuthToken(user.getId(), new Date(now + refreshTokenExpiry));
 
+        Member member = null;
         MemberRefreshToken memberRefreshToken = memberRefreshTokenRepository.findByMemberId(user.getId()).orElse(null);
         if (memberRefreshToken != null) {
             memberRefreshToken.updateRefreshToken(refreshToken.getToken());
         } else {
-            Member member = memberRepository.findById(user.getId()).orElseThrow();
+            member = memberRepository.findById(user.getId()).orElseThrow();
             memberRefreshTokenRepository.save(MemberRefreshToken.builder()
                     .member(member)
                     .refreshToken(refreshToken.getToken())
@@ -87,9 +88,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
         CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
 
-        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(host + redirectUri);
-        Member member = memberRepository.findById(user.getId()).orElseThrow();
+        if (member == null) {
+            member = memberRepository.findById(user.getId()).orElseThrow();
+        }
         String nickname = member.getNickname();
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(host + redirectUri);
 
         if (nickname == null || nickname.isBlank()) {
             String certifyKey = memberCertifyRepository.findCertifyKeyByMemberIdAndCertifyCode(member.getId(), CertifyCode.SET_ADD_INFO);
