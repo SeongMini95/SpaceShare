@@ -5,6 +5,7 @@ import com.jsm.ss.domain.member.Member;
 import com.jsm.ss.domain.membercertify.converter.CertifyCodeConverter;
 import com.jsm.ss.domain.membercertify.enums.CertifyCode;
 import lombok.*;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -45,5 +46,13 @@ public class MemberCertify extends BaseTimeEntity {
         this.certifyKey = certifyKey;
         this.isUse = isUse;
         this.expireTime = expireTime;
+    }
+
+    public MemberCertify(Member member, CertifyCode certifyCode, Long minutes) {
+        this.member = member;
+        this.certifyCode = certifyCode;
+        this.certifyKey = RandomStringUtils.randomAlphanumeric(64);
+        this.isUse = false;
+        this.expireTime = LocalDateTime.now().plusMinutes(minutes);
     }
 }

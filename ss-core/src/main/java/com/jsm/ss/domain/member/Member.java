@@ -49,4 +49,8 @@ public class Member extends BaseTimeEntity {
         this.profile = profile;
         this.role = role;
     }
+
+    public void updateEmailAfterLogin(String email) {
+        this.email = email;
+    }
 }
