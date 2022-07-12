@@ -31,12 +31,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         SiteDiv siteDiv = SiteDiv.valueOf(userRequest.getClientRegistration().getRegistrationId().toUpperCase());
 
         OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(siteDiv, user.getAttributes());
-        Member savedMember = memberRepository.findByAuthIdAndSiteDivAndRole(userInfo.getId(), siteDiv, Role.USER)
+        Member savedMember = memberRepository.findByAuthIdAndSiteDivAndRole(userInfo.getId(), siteDiv, Role.HOST)
                 .orElse(Member.builder()
                         .authId(userInfo.getId())
                         .email(userInfo.getEmail())
                         .siteDiv(siteDiv)
-                        .role(Role.USER)
+                        .role(Role.HOST)
                         .build());
 
         if (savedMember.getId() != null) {

@@ -1,0 +1,7 @@
+spring:
+  config:
+    import: application-db.yml, application-oauth.yml
+
+logging:
+  level:
+    org.hibernate.type.descriptor.sql: trace

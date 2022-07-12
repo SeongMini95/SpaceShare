@@ -52,3 +52,9 @@ project(":ss-user-api") {
         implementation project(":ss-core")
     }
 }
+
+project(":ss-host-api") {
+    dependencies {
+        implementation project(":ss-core")
+    }
+}

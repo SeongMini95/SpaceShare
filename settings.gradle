@@ -1,4 +1,5 @@
 rootProject.name = 'SpaceShare'
 include 'ss-core'
 include 'ss-user-api'
+include 'ss-host-api'
 
