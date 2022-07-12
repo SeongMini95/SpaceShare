@@ -1,16 +1,20 @@
 package com.jsm.ss.domain.memberrefreshtoken;
 
+import com.jsm.ss.domain.BaseTimeEntity;
 import com.jsm.ss.domain.member.Member;
-import lombok.*;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @EqualsAndHashCode(of = "id", callSuper = false)
 @Getter
 @Entity
 @Table(name = "member_refresh_token")
-public class MemberRefreshToken {
+public class MemberRefreshToken extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
